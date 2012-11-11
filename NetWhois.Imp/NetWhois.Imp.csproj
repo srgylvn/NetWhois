@@ -39,7 +39,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProtocolFactory.cs" />
+    <Compile Include="IWhoisProtocol.cs" />
+    <Compile Include="IWhoisRoutine.cs" />
+    <Compile Include="IWhoisServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolFactory.cs" />
+    <Compile Include="WhoisProtocol.cs" />
+    <Compile Include="WhoisRoutine.cs" />
+    <Compile Include="WhoisServer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetWhois.Components\NetWhois.Components.csproj">
+      <Project>{ED8FB346-99EA-462E-AB18-348EEFC1CCE4}</Project>
+      <Name>NetWhois.Components</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

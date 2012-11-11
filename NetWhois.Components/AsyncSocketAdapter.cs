@@ -11,7 +11,7 @@ namespace NetWhois.Components
 			Socket = socket;
 		}
 
-		public Task AcceptAsync()
+		public Task<Socket> AcceptAsync()
 		{
 			return Task<Socket>.Factory.FromAsync(Socket.BeginAccept, Socket.EndAccept, null);
 		}

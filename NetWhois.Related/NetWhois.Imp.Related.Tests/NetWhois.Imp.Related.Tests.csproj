@@ -48,10 +48,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fakes\CustomAsyncAdapterFake.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WhoisProtocolTests.cs" />
+    <Compile Include="WhoisServerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NetWhois.Components\NetWhois.Components.csproj">
+      <Project>{ED8FB346-99EA-462E-AB18-348EEFC1CCE4}</Project>
+      <Name>NetWhois.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NetWhois.Imp\NetWhois.Imp.csproj">
+      <Project>{A5F80BA6-BAC8-4AF3-A3D5-05DBD5C50D04}</Project>
+      <Name>NetWhois.Imp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
