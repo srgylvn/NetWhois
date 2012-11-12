@@ -2,6 +2,7 @@
 using Castle.Windsor;
 using Castle.Windsor.Installer;
 using NetWhois.Components;
+using NetWhois.Related.Bootsloader.Installers;
 
 namespace NetWhois.Related.Bootsloader
 {
@@ -10,7 +11,7 @@ namespace NetWhois.Related.Bootsloader
 		public static IObjectFactory Initialize()
 		{
 			var wcontainer = new WindsorContainer();
-			wcontainer.Install(FromAssembly.This());
+			wcontainer.Install(new GlobalInstaller());
 
 			wcontainer.Register(
 				Component.For<IObjectFactory>().ImplementedBy<ObjectFactory>().DependsOn(new { container = wcontainer })
