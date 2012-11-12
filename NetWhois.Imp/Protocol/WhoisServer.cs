@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using NetWhois.Components;
 
 namespace NetWhois.Imp.Protocol
@@ -38,10 +40,23 @@ namespace NetWhois.Imp.Protocol
 			var socket = await serverSocket.AcceptAsync();
 			var asyncClientSocket = _socketFactory.Create(socket);
 			var protocol = _protocolFactory.CreateWhois(asyncClientSocket);
+			
+
+			var cancellationToken = new CancellationTokenSource();
+			Action<Exception> onSocketError = (_) => cancellationToken.Cancel();
 
 			_whoisRoutine
-				.RunAsync(protocol)
-				.ContinueWith((_) => asyncClientSocket.Close());
+				.RunAsync(protocol, onSocketError)
+				.ContinueWith(
+					(t) =>
+						{
+							if (!t.IsCanceled)
+							{
+								SocketUtilities.Try(() => asyncClientSocket.Close(), onSocketError);
+							}
+						},
+					cancellationToken.Token
+				);
 		}
 
 		public void Stop()

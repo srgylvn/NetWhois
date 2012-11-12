@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using NetWhois.Imp.Protocol;
@@ -13,6 +14,7 @@ namespace NetWhois.Imp.Related.Tests
 		private IResponseBuilder _responseBuilder;
 		private string _request;
 		private string _response;
+		private Action<Exception> _onSocketError;
 
 		[SetUp]
 		public void Setup()
@@ -23,6 +25,7 @@ namespace NetWhois.Imp.Related.Tests
 			_protocol = A.Fake<IWhoisProtocol>();
 			_responseBuilder = A.Fake<IResponseBuilder>();
 
+			_onSocketError = (_) => { };
 			A.CallTo(() => _protocol.GetRequestAsync())
 				.Returns(new TaskFactory<string>().StartNew(() => _request));
 			A.CallTo(() => _responseBuilder.BuildResponseAsync(A<string>._))
@@ -39,7 +42,7 @@ namespace NetWhois.Imp.Related.Tests
 		{
 			var routine = CreateRoutine();
 
-			routine.RunAsync(_protocol).Wait();
+			routine.RunAsync(_protocol, _onSocketError).Wait();
 
 			A.CallTo(() => _protocol.GetRequestAsync()).MustHaveHappened();
 		}
@@ -49,7 +52,7 @@ namespace NetWhois.Imp.Related.Tests
 		{		
 			var routine = CreateRoutine();
 
-			routine.RunAsync(_protocol).Wait();
+			routine.RunAsync(_protocol, _onSocketError).Wait();
 
 			A.CallTo(() => _responseBuilder.BuildResponseAsync(_request)).MustHaveHappened();
 		}
@@ -59,7 +62,7 @@ namespace NetWhois.Imp.Related.Tests
 		{						
 			var routine = CreateRoutine();
 
-			routine.RunAsync(_protocol).Wait();
+			routine.RunAsync(_protocol, _onSocketError).Wait();
 
 			A.CallTo(() => _protocol.SendResponseAsync(_response)).MustHaveHappened();
 		}

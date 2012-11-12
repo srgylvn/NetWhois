@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
@@ -82,7 +83,7 @@ namespace NetWhois.Imp.Related.Tests
 
 			server.ProcessSingleConnection(_socket);
 
-			A.CallTo(() => _whoisRoutine.RunAsync(_protocol));
+			A.CallTo(() => _whoisRoutine.RunAsync(_protocol, A<Action<Exception>>._));
 		}
 
 		[Test]
@@ -102,7 +103,7 @@ namespace NetWhois.Imp.Related.Tests
 		[Test]
 		public void ProcessSingleConnection_ClosesSocket()
 		{
-			A.CallTo(() => _whoisRoutine.RunAsync(A<IWhoisProtocol>._))
+			A.CallTo(() => _whoisRoutine.RunAsync(A<IWhoisProtocol>._, A<Action<Exception>>._))
 				.Returns(new TaskFactory().StartNew(() => { }));
 
 			var server = CreateServer();
@@ -110,6 +111,20 @@ namespace NetWhois.Imp.Related.Tests
 			System.Threading.Thread.Sleep(1000); // wait for continue with is called
 
 			A.CallTo(() => _socket.Close()).MustHaveHappened();
+		}
+
+		[Test]
+		public void ProcessSingleConnection_CloseIsNotCalledOnSocketError()
+		{
+			A.CallTo(() => _whoisRoutine.RunAsync(A<IWhoisProtocol>._, A<Action<Exception>>._))
+				.Invokes(x => x.GetArgument<Action<Exception>>("onSocketError").Invoke(new SocketException()))
+				.Returns(new TaskFactory().StartNew(() => { }));
+
+			var server = CreateServer();
+			server.ProcessSingleConnection(_socket);
+			System.Threading.Thread.Sleep(1000); // wait for continue with is called
+
+			A.CallTo(() => _socket.Close()).MustNotHaveHappened();
 		}
 	}
 }

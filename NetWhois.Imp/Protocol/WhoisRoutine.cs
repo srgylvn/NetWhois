@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using NetWhois.Components;
 using NetWhois.Imp.Response;
 
 namespace NetWhois.Imp.Protocol
@@ -11,18 +13,18 @@ namespace NetWhois.Imp.Protocol
 			_responseBuilder = responseBuilder;
 		}
 
-		public Task RunAsync(IWhoisProtocol protocol)
+		public Task RunAsync(IWhoisProtocol protocol, Action<Exception> onSocketError)
 		{
 			return new TaskFactory().StartNew(
-					() => ProcessRoutine(protocol)
-				);
+				() => SocketUtilities.Try(
+					() => ProcessRoutine(protocol), onSocketError));
 		}
 
 		private async void ProcessRoutine(IWhoisProtocol protocol)
-		{
+		{			
 			string request = await protocol.GetRequestAsync();
 			string response = await _responseBuilder.BuildResponseAsync(request);
-			await protocol.SendResponseAsync(response);
+			await protocol.SendResponseAsync(response);				
 		}
 	}
 }

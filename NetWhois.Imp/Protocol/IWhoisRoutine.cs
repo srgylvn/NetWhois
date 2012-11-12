@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace NetWhois.Imp.Protocol
 {
 	public interface IWhoisRoutine
 	{
-		Task RunAsync(IWhoisProtocol protocol);
+		Task RunAsync(IWhoisProtocol protocol, Action<Exception> onSocketError);
 	}
 }
