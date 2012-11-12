@@ -4,6 +4,7 @@ using System.Linq;
 using FakeItEasy;
 using NetWhois.Components;
 using NUnit.Framework;
+using NetWhois.Imp.Protocol;
 using NetWhois.Imp.Related.Tests.Fakes;
 
 namespace NetWhois.Imp.Related.Tests
@@ -122,5 +123,7 @@ namespace NetWhois.Imp.Related.Tests
 				A<byte[]>.That.IsSameSequenceAs(expectedBuffer), 6, expectedBuffer.Length - 6)
 				).MustHaveHappened();
         }
+
+
 	}
 }

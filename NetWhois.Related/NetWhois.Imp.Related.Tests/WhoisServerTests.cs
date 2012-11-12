@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using NetWhois.Components;
+using NetWhois.Imp.Protocol;
 
 namespace NetWhois.Imp.Related.Tests
 {
@@ -81,7 +82,7 @@ namespace NetWhois.Imp.Related.Tests
 
 			server.ProcessSingleConnection(_socket);
 
-			A.CallTo(() => _whoisRoutine.RunAsync(_socket, _protocol));
+			A.CallTo(() => _whoisRoutine.RunAsync(_protocol));
 		}
 
 		[Test]
@@ -96,6 +97,19 @@ namespace NetWhois.Imp.Related.Tests
 
 			Assert.That(res, Is.True);
 			A.CallTo(() => _socket.AcceptAsync()).MustHaveHappened(Repeated.AtLeast.Twice);
+		}
+
+		[Test]
+		public void ProcessSingleConnection_ClosesSocket()
+		{
+			A.CallTo(() => _whoisRoutine.RunAsync(A<IWhoisProtocol>._))
+				.Returns(new TaskFactory().StartNew(() => { }));
+
+			var server = CreateServer();
+			server.ProcessSingleConnection(_socket);			
+			System.Threading.Thread.Sleep(1000); // wait for continue with is called
+
+			A.CallTo(() => _socket.Close()).MustHaveHappened();
 		}
 	}
 }

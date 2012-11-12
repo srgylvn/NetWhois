@@ -39,15 +39,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProtocolFactory.cs" />
-    <Compile Include="IWhoisProtocol.cs" />
-    <Compile Include="IWhoisRoutine.cs" />
-    <Compile Include="IWhoisServer.cs" />
+    <Compile Include="Protocol\IProtocolFactory.cs" />
+    <Compile Include="Protocol\IWhoisProtocol.cs" />
+    <Compile Include="Protocol\IWhoisRoutine.cs" />
+    <Compile Include="Protocol\IWhoisServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ProtocolFactory.cs" />
-    <Compile Include="WhoisProtocol.cs" />
-    <Compile Include="WhoisRoutine.cs" />
-    <Compile Include="WhoisServer.cs" />
+    <Compile Include="Protocol\ProtocolFactory.cs" />
+    <Compile Include="Protocol\WhoisProtocol.cs" />
+    <Compile Include="Protocol\WhoisRoutine.cs" />
+    <Compile Include="Protocol\WhoisServer.cs" />
+    <Compile Include="Response\IResponseBuilder.cs" />
+    <Compile Include="Response\ResponseBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetWhois.Components\NetWhois.Components.csproj">

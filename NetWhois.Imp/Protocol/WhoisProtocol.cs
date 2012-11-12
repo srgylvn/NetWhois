@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NetWhois.Components;
 
-namespace NetWhois.Imp
+namespace NetWhois.Imp.Protocol
 {
 	public class WhoisProtocol : IWhoisProtocol
 	{

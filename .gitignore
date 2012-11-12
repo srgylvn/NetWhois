@@ -3,3 +3,13 @@ _ReSharper.NetWhois
 /NetWhois.sln.DotSettings.user
 /NetWhois.Components/bin
 /NetWhois.Components/obj
+/NetWhois.Imp/bin
+/NetWhois.Imp/obj
+/NetWhois.Related/NetWhois.Imp.Related.Tests/bin
+/NetWhois.Related/NetWhois.Imp.Related.Tests/obj
+/NetWhois.Related/NetWhois.Components.Related.Tests/bin
+/NetWhois.Related/NetWhois.Components.Related.Tests/obj
+/NetWhois.Related/NetWhois.Related.Bootsloader/bin
+/NetWhois.Related/NetWhois.Related.Bootsloader/obj
+/NetWhois.Related/NetWhois.Related.HostConsole/bin
+/NetWhois.Related/NetWhois.Related.HostConsole/obj

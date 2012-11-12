@@ -32,5 +32,15 @@ namespace NetWhois.Components
 				null
 			);
 		}
+
+		public Task Close()
+		{
+			return new TaskFactory().StartNew(
+				() =>
+					{
+						Socket.Shutdown(SocketShutdown.Both);
+						Socket.Close();
+					});
+		}
 	}
 }

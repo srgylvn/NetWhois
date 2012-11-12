@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace NetWhois.Imp
+namespace NetWhois.Imp.Protocol
 {
 	public interface IWhoisProtocol
 	{

@@ -1,6 +1,6 @@
 ﻿using NetWhois.Components;
 
-namespace NetWhois.Imp
+namespace NetWhois.Imp.Protocol
 {
 	public interface IProtocolFactory
 	{

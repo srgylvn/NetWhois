@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using NetWhois.Components;
 
-namespace NetWhois.Imp
+namespace NetWhois.Imp.Protocol
 {
 	public class WhoisServer : IWhoisServer
 	{
@@ -33,15 +33,15 @@ namespace NetWhois.Imp
 					}, _socket);
 		}
 
-		internal void ProcessSingleConnection(ISocketAsyncAdapter serverSocket)
+		internal async void ProcessSingleConnection(ISocketAsyncAdapter serverSocket)
 		{			
-			var taskAccept = serverSocket.AcceptAsync();
-			taskAccept.Wait();
-			var socket = taskAccept.Result;
+			var socket = await serverSocket.AcceptAsync();
 			var asyncClientSocket = _socketFactory.Create(socket);
 			var protocol = _protocolFactory.CreateWhois(asyncClientSocket);
 
-			_whoisRoutine.RunAsync(asyncClientSocket, protocol);
+			_whoisRoutine
+				.RunAsync(protocol)
+				.ContinueWith((_) => asyncClientSocket.Close());
 		}
 
 		public void Stop()

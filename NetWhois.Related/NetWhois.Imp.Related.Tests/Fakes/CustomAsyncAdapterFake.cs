@@ -49,6 +49,11 @@ namespace NetWhois.Imp.Related.Tests.Fakes
 			       );
 		}
 
+		public Task Close()
+		{
+			return new TaskFactory().StartNew(() => { });
+		}
+
 		public Socket Socket { get; set; }
 	}
 }
