@@ -1,17 +1,18 @@
-﻿using System.Net.Sockets;
+﻿using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace NetWhois.Components
 {
-	public class AsyncSocketAdapter : ISocketAsyncAdapter
-	{
-		public Socket Socket { get; private set; }
-		public AsyncSocketAdapter(Socket socket)
-		{
-			Socket = socket;
-		}
+	public class AsyncSocketAdapter : IAsyncSocketAdapter
+	{		
+        public Socket Socket { get; private set; }
+	    public AsyncSocketAdapter(Socket socket)
+	    {
+	        Socket = socket;
+	    }
 
-		public Task<Socket> AcceptAsync()
+	    public Task<Socket> AcceptAsync()
 		{
 			return Task<Socket>.Factory.FromAsync(Socket.BeginAccept, Socket.EndAccept, null);
 		}
@@ -42,5 +43,15 @@ namespace NetWhois.Components
 						Socket.Close();
 					});
 		}
+
+	    public void Bind(EndPoint lockalEp)
+	    {
+	        Socket.Bind(lockalEp);
+	    }
+
+	    public void Listen()
+	    {
+	        Socket.Listen(256);
+	    }
 	}
 }

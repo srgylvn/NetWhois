@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using FakeItEasy;
 using NUnit.Framework;
 using NetWhois.Components;
 using NetWhois.Imp.Protocol;
+using NetWhois.Imp.Settings;
 
 namespace NetWhois.Imp.Related.Tests
 {
@@ -12,21 +14,25 @@ namespace NetWhois.Imp.Related.Tests
 	public class WhoisServerTests
 	{
 		private ISocketAdapterFactory _socketFactory;
-		private ISocketAsyncAdapter _socket;
+		private IAsyncSocketAdapter _socket;
 		private IProtocolFactory _protocolFactory;
 		private IWhoisProtocol _protocol;
 		private IWhoisRoutine _whoisRoutine;
+	    private ISettings _settings;
 		private Socket _dummySocket;
+	    private EndPoint _localEp;
 		
 		[SetUp]
 		public void Setup()
 		{
-			_socket = A.Fake<ISocketAsyncAdapter>();
+			_socket = A.Fake<IAsyncSocketAdapter>();
 			_socketFactory = A.Fake<ISocketAdapterFactory>();
 			_protocolFactory = A.Fake<IProtocolFactory>();
 			_protocol = A.Fake<IWhoisProtocol>();
 			_whoisRoutine = A.Fake<IWhoisRoutine>();
-			_dummySocket = new Socket(SocketType.Stream, ProtocolType.Tcp);
+            _settings = A.Fake<ISettings>();
+		    _localEp = new IPEndPoint(IPAddress.Any, 43);
+			_dummySocket = new Socket(SocketType.Stream, ProtocolType.Tcp);            
 
 			InitDefaults();
 		}
@@ -37,14 +43,45 @@ namespace NetWhois.Imp.Related.Tests
 				.Returns((new TaskFactory<Socket>()).StartNew(() => _dummySocket));
 			A.CallTo(() => _socketFactory.Create(A<Socket>._))
 				.Returns(_socket);
-			A.CallTo(() => _protocolFactory.CreateWhois(A<ISocketAsyncAdapter>._))
+			A.CallTo(() => _protocolFactory.CreateWhois(A<IAsyncSocketAdapter>._))
 				.Returns(_protocol);
+		    A.CallTo(() => _settings.Bind).Returns(_localEp);
 		}
 
 		private WhoisServer CreateServer()
 		{
-			return new WhoisServer(_socket, _socketFactory, _protocolFactory, _whoisRoutine);
+			return new WhoisServer(_socket, _socketFactory, _protocolFactory, _whoisRoutine, _settings);
 		}
+
+        //[Test]
+        //public void ProcessSingleConnection_UsesSettigs()
+        //{
+        //    var server = CreateServer();
+
+        //    server.ProcessSingleConnection(_socket);
+
+        //    A.CallTo(() => _settings.Bind).MustHaveHappened();
+        //}        
+
+        //[Test]
+        //public void ProcessSingleConnection_BindsSocket()
+        //{
+        //    var server = CreateServer();
+
+        //    server.ProcessSingleConnection(_socket);
+
+        //    A.CallTo(() => _socket.Bind(_localEp)).MustHaveHappened();
+        //}
+
+        //[Test]
+        //public void ProcessSingleConnection_CallsListen()
+        //{
+        //    var server = CreateServer();
+
+        //    server.ProcessSingleConnection(_socket);
+
+        //    A.CallTo(() => _socket.Listen()).MustHaveHappened();
+        //}
 
 		[Test]
 		public void ProcessSingleConnection_StartsAcceptingConnections()

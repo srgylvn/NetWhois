@@ -10,9 +10,9 @@ namespace NetWhois.Components
 			_objectFactory = objectFactory;
 		}
 
-		public ISocketAsyncAdapter Create(Socket socket)
+		public IAsyncSocketAdapter Create(Socket socket)
 		{
-			return _objectFactory.Instance<ISocketAsyncAdapter>(new {socket });
+			return _objectFactory.Instance<IAsyncSocketAdapter>(new {socket });
 		}
 	}
 }

@@ -4,6 +4,6 @@ namespace NetWhois.Imp.Protocol
 {
 	public interface IProtocolFactory
 	{
-		IWhoisProtocol CreateWhois(ISocketAsyncAdapter boundSocket);
+		IWhoisProtocol CreateWhois(IAsyncSocketAdapter boundSocket);
 	}
 }

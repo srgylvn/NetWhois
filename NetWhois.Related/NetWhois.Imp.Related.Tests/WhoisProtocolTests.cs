@@ -12,12 +12,12 @@ namespace NetWhois.Imp.Related.Tests
 	[TestFixture]
 	public class WhoisProtocolTests
 	{		
-		private ISocketAsyncAdapter _socket; 
+		private IAsyncSocketAdapter _socket; 
 
 		[SetUp]
 		public void Setup()
 		{
-			_socket = A.Fake<ISocketAsyncAdapter>();
+			_socket = A.Fake<IAsyncSocketAdapter>();
 		}
 
 

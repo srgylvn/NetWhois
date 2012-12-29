@@ -8,8 +8,8 @@ namespace NetWhois.Imp.Protocol
 	{
 		private const string Pattern = "\r\n";
 
-		private readonly ISocketAsyncAdapter _asyncAdapter;
-		public WhoisProtocol(ISocketAsyncAdapter asyncAdapter)
+		private readonly IAsyncSocketAdapter _asyncAdapter;
+		public WhoisProtocol(IAsyncSocketAdapter asyncAdapter)
 		{
 			_asyncAdapter = asyncAdapter;
 		}

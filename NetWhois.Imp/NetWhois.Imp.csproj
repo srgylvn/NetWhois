@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,6 +51,8 @@
     <Compile Include="Protocol\WhoisServer.cs" />
     <Compile Include="Response\IResponseBuilder.cs" />
     <Compile Include="Response\ResponseBuilder.cs" />
+    <Compile Include="Settings\ISettings.cs" />
+    <Compile Include="Settings\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetWhois.Components\NetWhois.Components.csproj">

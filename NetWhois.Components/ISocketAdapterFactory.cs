@@ -4,6 +4,6 @@ namespace NetWhois.Components
 {
 	public interface ISocketAdapterFactory
 	{
-		ISocketAsyncAdapter Create(Socket socket);
+		IAsyncSocketAdapter Create(Socket socket);
 	}
 }

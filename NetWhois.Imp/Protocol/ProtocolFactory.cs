@@ -10,7 +10,7 @@ namespace NetWhois.Imp.Protocol
 			_objectFactory = objectFactory;
 		}
 
-		public IWhoisProtocol CreateWhois(ISocketAsyncAdapter boundSocket)
+		public IWhoisProtocol CreateWhois(IAsyncSocketAdapter boundSocket)
 		{
 			return _objectFactory.Instance<IWhoisProtocol>(new {asyncAdapter = boundSocket});
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using NetWhois.Components;
 
 namespace NetWhois.Imp.Related.Tests.Fakes
 {
-	public class CustomAsyncAdapterFake : ISocketAsyncAdapter
+	public class CustomAsyncAdapterFake : IAsyncSocketAdapter
 	{
 		private List<byte[]> _sequence;
 		private int _pointer;
@@ -55,5 +56,15 @@ namespace NetWhois.Imp.Related.Tests.Fakes
 		}
 
 		public Socket Socket { get; set; }
+
+	    public void Bind(EndPoint lockalEp)
+	    {
+            /* empty */	        
+	    }
+
+	    public void Listen()
+	    {
+	        /* empty */
+	    }
 	}
 }

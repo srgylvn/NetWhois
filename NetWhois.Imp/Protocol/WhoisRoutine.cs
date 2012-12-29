@@ -5,6 +5,15 @@ using NetWhois.Imp.Response;
 
 namespace NetWhois.Imp.Protocol
 {
+    public static class TaskExtension
+    {
+        public static T Await<T>(this Task<T> task)
+        {
+            task.Wait();
+            return task.Result;
+        }
+    }
+
 	public class WhoisRoutine : IWhoisRoutine
 	{
 		private IResponseBuilder _responseBuilder;
@@ -20,11 +29,11 @@ namespace NetWhois.Imp.Protocol
 					() => ProcessRoutine(protocol), onSocketError));
 		}
 
-		private async void ProcessRoutine(IWhoisProtocol protocol)
-		{			
-			string request = await protocol.GetRequestAsync();
-			string response = await _responseBuilder.BuildResponseAsync(request);
-			await protocol.SendResponseAsync(response);				
+		private void ProcessRoutine(IWhoisProtocol protocol)
+		{    
+			string request = protocol.GetRequestAsync().Await<string>();
+			string response = _responseBuilder.BuildResponseAsync(request).Await<string>();
+			protocol.SendResponseAsync(response).Wait();				
 		}
 	}
 }
